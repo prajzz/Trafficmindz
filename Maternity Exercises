@@ -1,0 +1,140 @@
+#Trafficmindz
+#we have tried to create an application which first asks how many weeks pregnant are you? upon entering the week it dislays the recommended exercises with image and helps with instruction
+#on how to do the exercise
+import tkinter as tk
+from PIL import ImageTk, Image
+
+# Data structure to store exercises, details, and images based on pregnancy trimester
+def get_exercise_data(weeks_pregnant):
+    if 0 < weeks_pregnant <= 13:  # First trimester
+        return {
+            "Prenatal Yoga": {
+                "description": "Focus on breathing exercises, gentle stretches, and relaxing poses. Avoid deep twists and lying on your back.",
+                "image": "yoga_pose.jpg"  # Replace with actual image path
+            },
+            "Kegel Exercises": {
+                "description": "Tighten the muscles you would use to stop urination, hold for 5 seconds, and then release. Repeat 10 times.",
+                "image": "kegel_exercise.jpg"  # Replace with actual image path
+            },
+            "Walking": {
+                "description": "Walk at a comfortable pace for 20–30 minutes a day. Keep it low-impact and relaxing.",
+                "image": "walking.jpg"  # Replace with actual image path
+            },
+            "Swimming": {
+                "description": "Swim or do gentle water aerobics for 30 minutes. Water supports your body and provides a full-body workout.",
+                "image": "swimming.jpg"  # Replace with actual image path
+            },
+            "Pelvic Tilts": {
+                "description": "Get on hands and knees, tighten your belly, tuck your pelvis, arch your back. Hold for a few seconds.",
+                "image": "pelvic_tilts.jpg"  # Replace with actual image path
+            }
+        }
+    elif 14 <= weeks_pregnant <= 27:  # Second trimester
+        return {
+            "Prenatal Yoga": {
+                "description": "Continue gentle poses. Focus on poses like Cat-Cow, Warrior Pose, and Child's Pose. Avoid lying on your back.",
+                "image": "yoga_pose.jpg"  # Replace with actual image path
+            },
+            "Light Strength Training": {
+                "description": "Use light weights or resistance bands. Perform slow, controlled movements like bicep curls and squats.",
+                "image": "strength_training.jpg"  # Replace with actual image path
+            },
+            "Walking": {
+                "description": "Continue walking for 20–30 minutes. It's a safe and beneficial low-impact exercise.",
+                "image": "walking.jpg"  # Replace with actual image path
+            },
+            "Swimming": {
+                "description": "Water exercises relieve pressure on joints and provide full-body conditioning.",
+                "image": "swimming.jpg"  # Replace with actual image path
+            },
+            "Stretching": {
+                "description": "Stretch gently, focusing on areas like the shoulders, back, and hamstrings. Hold each stretch for 20–30 seconds.",
+                "image": "stretching.jpg"  # Replace with actual image path
+            }
+        }
+    elif 28 <= weeks_pregnant <= 40:  # Third trimester
+        return {
+            "Walking": {
+                "description": "Walk daily for 15–20 minutes. Adjust the pace to your comfort level, ensuring no strain.",
+                "image": "walking.jpg"  # Replace with actual image path
+            },
+            "Pelvic Tilts": {
+                "description": "Pelvic tilts can help relieve back pain and improve core strength, useful for labor preparation.",
+                "image": "pelvic_tilts.jpg"  # Replace with actual image path
+            },
+            "Prenatal Yoga": {
+                "description": "Focus on hip-openers and gentle stretches to improve flexibility. Avoid any intense poses.",
+                "image": "yoga_pose.jpg"  # Replace with actual image path
+            },
+            "Squats": {
+                "description": "Stand with feet shoulder-width apart, lower your body like sitting in a chair, hold for a few seconds, and stand back up.",
+                "image": "squat.jpg"  # Replace with actual image path
+            },
+            "Breathing Exercises": {
+                "description": "Inhale deeply through your nose, hold for a few seconds, and exhale through your mouth. Practice mindful breathing.",
+                "image": "breathing.jpg"  # Replace with actual image path
+            }
+        }
+    else:
+        return {}
+
+# Function to display exercise details and image
+def display_exercise_details(exercise_name):
+    exercise = exercise_data[exercise_name]
+    description_label.config(text=exercise["description"])
+
+    # Load and display the image
+    img = Image.open(exercise["image"])
+    img = img.resize((300, 300))
+    img = ImageTk.PhotoImage(img)
+    image_label.config(image=img)
+    image_label.image = img  # To prevent garbage collection
+
+def main():
+    # Ask user for pregnancy weeks
+    weeks_pregnant = int(input("How many weeks pregnant are you? "))
+
+    # Get exercises based on weeks
+    global exercise_data
+    exercise_data = get_exercise_data(weeks_pregnant)
+
+    if not exercise_data:
+        print("Please consult your doctor for personalized exercise recommendations.")
+        return
+
+    # Create the main window
+    root = tk.Tk()
+    root.title("Pregnancy Exercise Recommendations")
+    root.geometry("600x600")
+    root.attributes("-topmost", True)
+
+    # Title label
+    title_label = tk.Label(root, text="Exercise Recommendations", font=("Arial", 20))
+    title_label.pack(pady=10)
+
+    # Dropdown menu for selecting exercises
+    exercise_names = list(exercise_data.keys())
+    selected_exercise = tk.StringVar(root)
+    selected_exercise.set(exercise_names[0])  # Default value
+
+    dropdown = tk.OptionMenu(root, selected_exercise, *exercise_names, command=display_exercise_details)
+    dropdown.pack(pady=10)
+
+    # Description label for exercise
+    global description_label
+    description_label = tk.Label(root, text="", wraplength=500, justify="left", font=("Arial", 14))
+    description_label.pack(pady=10)
+
+    # Image label to display the image
+    global image_label
+    image_label = tk.Label(root)
+    image_label.pack(pady=10)
+
+
+    # Show the details for the default selected exercise
+    display_exercise_details(selected_exercise.get())
+
+    root.mainloop()
+
+if __name__ == "__main__":
+    main()
