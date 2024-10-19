@@ -1,5 +1,8 @@
 #Trafficmindz
-#we have tried to create an application which first asks how many weeks pregnant are you? upon entering the week it dislays the recommended exercises with image and helps with instruction
+#we have tried to create an application 
+#which first asks how many weeks pregnant are you? 
+#upon entering the week it dislays the recommended exercises 
+#with image and helps with instruction
 #on how to do the exercise
 import tkinter as tk
 from PIL import ImageTk, Image
